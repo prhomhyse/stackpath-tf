@@ -13,6 +13,8 @@ crash.log
 # version control.
 #
 # example.tfvars
+#For this project I use below file, so it must be ignored for security purposes.
+terraform.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
