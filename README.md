@@ -23,7 +23,7 @@ variable "stackpath_client_id" {}
 variable "stackpath_client_secret" {}
 
 provider "stackpath" {
-  stack_id         = var.stackpath_stack_id
+  stack_id      = var.stackpath_stack_id
   client_id     = var.stackpath_client_id
   client_secret = var.stackpath_client_secret
 }
