@@ -28,3 +28,19 @@ provider "stackpath" {
   client_secret = var.stackpath_client_secret
 }
 ```
+
+For more help, visit this guide: https://stackpath.dev/docs/getting-started
+
+`virtual_machine` and `container` are not modules but independent Terraform configuration files.
+
+A module scenario will look like this:
+
+virtual_machine
+  |-network_policy
+  |  |-main.tf
+  |  |-variables.tf
+  |  |-outputs.tf
+  |-main.tf
+  |-variables.tf
+  |-outputs.tf
+
