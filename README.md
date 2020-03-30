@@ -1,7 +1,7 @@
 # stackpath-tf
 Deploy StackPath Edge Computing Resources (VMs and Containers) using Terraform
 
-Take note of the **old syntax** that may return errors when you `terraform plan` on Terraform version `0.12.23`:
+Take note of the **old syntax** that may return errors when you `terraform plan` on Terraform version `0.12.24`:
 
 ```
 variable "stackpath_stack" {}
