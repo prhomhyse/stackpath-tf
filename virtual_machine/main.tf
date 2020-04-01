@@ -1,3 +1,10 @@
+# Specify StackPath Provider and your access details
+provider "stackpath" {
+  stack_id      = var.stackpath_stack_id
+  client_id     = var.stackpath_client_id
+  client_secret = var.stackpath_client_secret
+}
+
 # Create a new network policy that only applies to the nginx workload
 resource "stackpath_compute_network_policy" "jollofx" {
   name = "Jollof X Policy"
