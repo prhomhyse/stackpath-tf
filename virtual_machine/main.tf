@@ -36,17 +36,35 @@ resource "stackpath_compute_workload" "jollofx" {
     name = "terrajollofx"
     # OS image to use for the virtual machine
     image = "stackpath-edge/ubuntu-1804-bionic:v201909061930"
-    port {
-      name     = "ssh"
-      port     = 22
-      protocol = "TCP"
-    }
+    
     resources {
       requests = {
         "cpu"    = "1"
         "memory" = "2Gi"
       }
     }
+
+    port {
+      name = "ssh"
+      port = 22
+      protocol = "TCP"
+      enable_implicit_network_policy = true
+    }
+
+    port {
+      name = "http"
+      port = 80
+      protocol = "TCP"
+      enable_implicit_network_policy = true
+    }
+
+    port {
+      name =  "https"
+      port = 443
+      protocol = "TCP"
+      enable_implicit_network_policy = true
+    }
+
     user_data = <<EOT
 #cloud-config
   ssh-authorized-keys:
