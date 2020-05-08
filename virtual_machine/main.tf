@@ -5,50 +5,6 @@ provider "stackpath" {
   client_secret = var.stackpath_client_secret
 }
 
-# Create a new network policy that only applies to the nginx workload
-resource "stackpath_compute_network_policy" "jollofx" {
-  name = "Jollof X Policy"
-  slug = "jollofx-policy"
-
-  instance_selector {
-    key      = "workload.platform.stackpath.net/workload-slug"
-    operator = "in"
-    # grab the slug value that was created for the workload
-    values = [stackpath_compute_workload.jollofx.slug]
-  }
-
-  priority = 100
-
-  policy_types = ["INGRESS", "EGRESS"]
-
-  # Create an ingress policy that allows all inbound connections destined for port 80
-  ingress {
-    description = "Allow all outbound connections on both TCP and UDP"
-    action      = "ALLOW"
-    protocol {
-      tcp {
-        destination_ports = [22]
-      }
-    }
-    from {
-      ip_block {
-        cidr = "0.0.0.0/0"
-      }
-    }
-  }
-
-  # Create a policy that allows all outbound connections to 0.0.0.0/0
-  egress {
-    description = "Allow all outbound connections on both TCP and UDP"
-    action      = "ALLOW"
-    to {
-      ip_block {
-        cidr = "0.0.0.0/0"
-      }
-    }
-  }
-}
-
 # Create a new compute workload that launches an nginx
 # container to New York and JFK
 resource "stackpath_compute_workload" "jollofx" {
