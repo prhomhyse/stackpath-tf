@@ -88,30 +88,13 @@ EOT
     }
   }
 
-  # Define the target configurations that select
-  # where workloads should be deployed.
   target {
-    # Provider a name to the target, this name must be
-    # a valid DNS label as described by RFC 1123, it can
-    # only contain the characters 'a-z', '0-9', '-', '.'.
     name = "us"
-    # The scope of where the compute instance should
-    # be launched. The only option currently supported
-    # is "cityCode".
     deployment_scope = "cityCode"
 
-    # Create a single instance in each location that
-    # matches the selectors defined below.
     min_replicas = 1
 
-    # Define a selector that should be used to
-    # decide where workload instances should be
-    # launched. You can define multiple selectors
-    # for a workload.
     selector {
-      # Select the location to create an instance by
-      # the city code of the location. This is currently
-      # the only supported option.
       key = "cityCode"
       # The operator to use when comparing values
       operator = "in"
