@@ -71,22 +71,11 @@ resource "stackpath_compute_workload" "jollofx" {
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCAR73HYZ9LMyPUNIzF8YD/cFaKazeFEX+Obq5C/8AeYc6kbssPCfLWXZfq2e+SSE3IuAiETg4sNtUW9do6zST0VqnA5lopiK34UoxdrAnA7RM34sq5kKB1diXF9tG0zz5tOPFMK3rwAFRod8ZF+2i5XIHkh6GULHry3vLfMGT8NwUovtSjpL+wOpW/2U4JNRQy3MMjiS9KHonczng4gfj41c/zHFhy7HvHt3iaXJ3EgUaZcPtSl50Q0j/YW/z7PnLLLkjcMz0KzEmwbTpuDswT6Ywl9o6/xJpM+pG1cfJ2dcAARyEIQIUz5+wHPoy2l8yFspY4fa9BE9Al79ZWyOv/ promise@example.com
 EOT
 
-    # Define a liveness probe that is used to determine the
-    # heath of an instance. The workload instance will be restarted
-    # when the liveness probe begins failing.
     liveness_probe {
-      # execute the liveness probe every 60 seconds
       period_seconds = 60
-      # mark the probe as successful after 3 successful probes
       success_threshold = 1
-      # mark the probe as failing after 4 failed liveness
-      # probe checks
       failure_threshold = 4
-      # wait 30 seconds before starting the liveness probe
-      # checks to give the application time to start up
       initial_delay_seconds = 60
-      # define the HTTP GET request that should be
-      # executed for the liveness probe
       http_get {
         port = 80
         # defaults to "/"
