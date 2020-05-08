@@ -5,8 +5,7 @@ provider "stackpath" {
   client_secret = var.stackpath_client_secret
 }
 
-# Create a new compute workload that launches an nginx
-# container to New York and JFK
+# Create a new compute workload that launches an nginx virtual_machine
 resource "stackpath_compute_workload" "jollofx" {
   # A human friendly name for the workload
   name = "Jollof X Workload"
@@ -14,18 +13,11 @@ resource "stackpath_compute_workload" "jollofx" {
   # a workload.
   slug = "jollofx-workload"
 
-  # Define multiple labels on the workload container. These
-  # labels can be used as label selectors when applying
-  # network policies.
   labels = {
     "role"        = "web-server"
     "environment" = "production"
   }
 
-  # Define the network interfaces that should
-  # be provisioned for the workload instances.
-  # We currently only support a "default" network
-  # for EdgeCompute workloads.
   network_interface {
     network = "default"
   }
@@ -85,24 +77,13 @@ EOT
       }
     }
 
-    # Define a probe that is used to determine when the instance
-    # should be considered ready to start serving traffic.
     readiness_probe {
-      # This will open a TCP connection to port 80. The probe will
-      # only fail if it cannot open a TCP connection to the configured
-      # port.
       tcp_socket {
         port = 80
       }
-      # execute the liveness probe every 60 seconds
       period_seconds = 60
-      # mark the probe as successful after 3 successful probes
       success_threshold = 1
-      # mark the probe as failing after 4 failed liveness
-      # probe checks
       failure_threshold = 4
-      # wait 30 seconds before starting the liveness probe
-      # checks to give the application time to start up
       initial_delay_seconds = 60
     }
   }
