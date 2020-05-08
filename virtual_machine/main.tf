@@ -49,13 +49,8 @@ resource "stackpath_compute_workload" "jollofx" {
     }
     user_data = <<EOT
 #cloud-config
-users:
-  - name: ubuntu
-    groups: sudo
-    shell: /bin/bash
-    sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    ssh-authorized-keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCAR73HYZ9LMyPUNIzF8YD/cFaKazeFEX+Obq5C/8AeYc6kbssPCfLWXZfq2e+SSE3IuAiETg4sNtUW9do6zST0VqnA5lopiK34UoxdrAnA7RM34sq5kKB1diXF9tG0zz5tOPFMK3rwAFRod8ZF+2i5XIHkh6GULHry3vLfMGT8NwUovtSjpL+wOpW/2U4JNRQy3MMjiS9KHonczng4gfj41c/zHFhy7HvHt3iaXJ3EgUaZcPtSl50Q0j/YW/z7PnLLLkjcMz0KzEmwbTpuDswT6Ywl9o6/xJpM+pG1cfJ2dcAARyEIQIUz5+wHPoy2l8yFspY4fa9BE9Al79ZWyOv/ promise@example.com
+  ssh-authorized-keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCAR73HYZ9LMyPUNIzF8YD/cFaKazeFEX+Obq5C/8AeYc6kbssPCfLWXZfq2e+SSE3IuAiETg4sNtUW9do6zST0VqnA5lopiK34UoxdrAnA7RM34sq5kKB1diXF9tG0zz5tOPFMK3rwAFRod8ZF+2i5XIHkh6GULHry3vLfMGT8NwUovtSjpL+wOpW/2U4JNRQy3MMjiS9KHonczng4gfj41c/zHFhy7HvHt3iaXJ3EgUaZcPtSl50Q0j/YW/z7PnLLLkjcMz0KzEmwbTpuDswT6Ywl9o6/xJpM+pG1cfJ2dcAARyEIQIUz5+wHPoy2l8yFspY4fa9BE9Al79ZWyOv/ promise@example.com
 EOT
 
     # Define a liveness probe that is used to determine the
