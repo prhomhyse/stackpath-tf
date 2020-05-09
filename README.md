@@ -30,3 +30,10 @@ virtual_machine
   |-variables.tf
   |-outputs.tf
 ```
+
+### TODO 
+
+- Better use of variables instead of hardcoding values.
+- Edge Compute Containers
+- Network Policies
+
