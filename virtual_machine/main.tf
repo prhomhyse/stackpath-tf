@@ -5,37 +5,41 @@ provider "stackpath" {
   client_secret = var.stackpath_client_secret
 }
 
-# Create a new compute workload that launches an nginx virtual_machine
+# Create a new Ubuntu virtual machine workload
 resource "stackpath_compute_workload" "jollofx" {
-  # A human friendly name for the workload
   name = "Jollof X Workload"
-  # A DNS compatible value that uniquely identifies
-  # a workload.
-  slug = "jollofx-workload"
+  slug = "jollofx"
 
+  # Define multiple labels on the workload VM.
   labels = {
     "role"        = "web-server"
     "environment" = "production"
   }
 
+  # Define the network interface.
   network_interface {
     network = "default"
   }
 
-  # Define your virtual machine
+  # Define an Ubuntu virtual machine
   virtual_machine {
-    # Name that should be given to the virtual machine
-    name = "terrajollofx"
-    # OS image to use for the virtual machine
+    # Name that should be given to the VM
+    name = "app"
+
+    # StackPath image to use for the VM
     image = "stackpath-edge/ubuntu-1804-bionic:v201909061930"
-    
+
+    # Hardware resources dedicated to the VM
     resources {
       requests = {
-        "cpu"    = "1"
+        # The number of CPU cores to allocate
+        "cpu" = "1"
+        # The amount of memory the VM should have
         "memory" = "2Gi"
       }
     }
 
+    # The ports that should be publicly exposed on the VM.
     port {
       name = "ssh"
       port = 22
@@ -57,10 +61,11 @@ resource "stackpath_compute_workload" "jollofx" {
       enable_implicit_network_policy = true
     }
 
+    # Cloud-init user data. Provide at least a public key
     user_data = <<EOT
 #cloud-config
-  ssh-authorized-keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCAR73HYZ9LMyPUNIzF8YD/cFaKazeFEX+Obq5C/8AeYc6kbssPCfLWXZfq2e+SSE3IuAiETg4sNtUW9do6zST0VqnA5lopiK34UoxdrAnA7RM34sq5kKB1diXF9tG0zz5tOPFMK3rwAFRod8ZF+2i5XIHkh6GULHry3vLfMGT8NwUovtSjpL+wOpW/2U4JNRQy3MMjiS9KHonczng4gfj41c/zHFhy7HvHt3iaXJ3EgUaZcPtSl50Q0j/YW/z7PnLLLkjcMz0KzEmwbTpuDswT6Ywl9o6/xJpM+pG1cfJ2dcAARyEIQIUz5+wHPoy2l8yFspY4fa9BE9Al79ZWyOv/ promise@example.com
+ssh_authorized_keys:
+ - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk5l6+MVTswob+xbUog2/Ow2J+mX/ZDPDl9W++m+0r5ku859/CTXOm1p+3bGZYWotvBpaFlB8ZQO/2PKYgStqByLzzAwpI7vdGrYHJWAbL76u0uyB9t0ds44GSn9+ehIGjtDs+vEfBTuzeSqCuaSQ51dIapbra+GtORjo75ilITq38kzPKbNOXn0QYOFZqQR+L5cQss+oOg4Ud/8l2NrgEte/KEAmMf4wf2xS0+o/A2jG1cs3x3IYZRR1UaluTBRbrz/Mjg+1KsezuZNJELL2KxbcHUd1xbHRFibzIb1/+gTKddwi7fZwVoORY+Z2tx+25R+vKUF5f74nLyqAlJh45 akpanpromise@hotmail.com
 EOT
 
     liveness_probe {
@@ -70,13 +75,15 @@ EOT
       initial_delay_seconds = 60
       http_get {
         port = 80
-        # defaults to "/"
         path = "/"
-        # defaults to http
         scheme = "HTTP"
+        http_headers = {
+          "content-type" = "application/json"
+        }
       }
     }
 
+    # Define a probe to determine when the instance is ready to serve traffic.
     readiness_probe {
       tcp_socket {
         port = 80
@@ -86,23 +93,38 @@ EOT
       failure_threshold = 4
       initial_delay_seconds = 60
     }
+
+    # Mount an additional volume into the virtual machine.
+    volume_mount {
+      slug       = "logging-volume"
+      mount_path = "/var/log"
+    }
   }
 
+  # Define the target configurations
   target {
     name = "us"
     deployment_scope = "cityCode"
-
     min_replicas = 1
-
     selector {
       key = "cityCode"
-      # The operator to use when comparing values
       operator = "in"
-      # The city code that instances should be created in.
       values = [
         "SEA",
         "JFK",
       ]
+    }
+  }
+
+  # Provision a new additional volume that can be mounted to the containers and
+  # virtual machines defined in the workload.
+  volume_claim {
+    name = "Logging volume"
+    slug = "logging-volume"
+    resources {
+      requests = {
+        storage = "100Gi"
+      }
     }
   }
 }
