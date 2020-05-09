@@ -30,27 +30,12 @@ It is recommended to create `user_data` with `cloud-init`. Provide at least a pu
 `failure_threshold` is the number of failed checks you have before marking the check as failing.
 `initial_delay_seconds` is the amount of time in seconds you wait before starting probe to give the application time to start up.
 
-You can fill in the `http_get` block or leave as defaults.
+In the `http_get` block, set the `port`, `path` (which defaults to "/"), `scheme` (which defaults to HTTP and define the `http_headers`).
 
-`readiness_probe` is the probe to determine when the instance is ready to serve traffic.
+`readiness_probe` is the probe to determine when the instance is ready to serve traffic. Similar to `liveness probe`, except the `tcp_socket` parameter which opens a TCP connection to a specified `port` which in this case is `80`.
 
+Make use of `volume_mount` to mount an additional volume into the virtual machine. 
+However, note that a volume can not be mounted more than once to the same VM. 
+You can mount a volume on multiple VMs in the same workload. 
 
-# Define a probe to determine when the instance is ready to serve traffic.
-    readiness_probe {
-      # This opens a TCP connection to port 80. The probe will only fail if it
-      # cannot open a TCP connection to the port.
-      tcp_socket {
-        port = 80
-      }
-      # Execute the probe every 60 seconds
-      period_seconds = 60
-      # Mark the probe as successful after 1 successful probe
-      success_threshold = 1
-      # Mark the probe as failing after 4 failed checks
-      failure_threshold = 4
-      # Wait 60 seconds before starting probe checks to give the application
-      # time to start up
-      initial_delay_seconds = 60
-    }
-
-Define the target configuration that selects where workloads should be deployed.
+This block accepts `slug` and `mount_path`.
