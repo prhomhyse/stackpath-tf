@@ -35,6 +35,7 @@ For more help, visit this guide: https://stackpath.dev/docs/getting-started
 
 A module scenario will look like this:
 
+```
 virtual_machine
   |-network_policy
   |  |-main.tf
@@ -43,4 +44,4 @@ virtual_machine
   |-main.tf
   |-variables.tf
   |-outputs.tf
-
+```
