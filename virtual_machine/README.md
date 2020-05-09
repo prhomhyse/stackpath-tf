@@ -39,3 +39,23 @@ However, note that a volume can not be mounted more than once to the same VM.
 You can mount a volume on multiple VMs in the same workload. 
 
 This block accepts `slug` and `mount_path`.
+
+Define the target configurations that selects where workloads shiuld be deployed with the `target` block.
+This block accepts:
+  - `name`:  provide a name to the target. This name provided to the target must be a valid DNS label label as described by RFC 1123. It can only contain the characters "a-z", "0-9", "-", and ".".
+
+  - `deployment_scope`: The scope of where the compute instance should be launched. The only supported option is `cityCode`.
+
+  - `min_replicas`: Minimum numbeer of instance replicas that should be created in a target deployment.
+
+  - `max_replicas`: The maximum number of instance replicas that should be created in a target deployment. This option is required when using auto-scaling options.
+
+`selector`: A selector used to decide where workload instances should be launched.
+
+`key`: Select the location to create an instance by the location's city code. `cityCode` is the only supported option.
+
+`operator`: The operator to use when comparing values. Only the `in` operator is supported.
+      
+`values`: The city code that instances should be created in. Cities are designated by their IATA airport code.
+
+`volume_claim`: Used to provision a new additional volume that can be mounted to the containers and virtual machines defined in the workload. It accepts a `name`, `slug` and a `resources` block.
