@@ -1,4 +1,7 @@
 # StackPath Edge Compute Virtual Machine
+
+Before we proceed, replace `ssh-rsa <your key>` in line 68 with your ssh public keys.
+
 You start by creating the `stackpath_compute_workload` resource. Replace `jollofx` with any name of choice.
 
 `name`: A human friendly name for the workload.
