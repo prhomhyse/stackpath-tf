@@ -65,7 +65,7 @@ resource "stackpath_compute_workload" "jollofx" {
     user_data = <<EOT
 #cloud-config
 ssh_authorized_keys:
- - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk5l6+MVTswob+xbUog2/Ow2J+mX/ZDPDl9W++m+0r5ku859/CTXOm1p+3bGZYWotvBpaFlB8ZQO/2PKYgStqByLzzAwpI7vdGrYHJWAbL76u0uyB9t0ds44GSn9+ehIGjtDs+vEfBTuzeSqCuaSQ51dIapbra+GtORjo75ilITq38kzPKbNOXn0QYOFZqQR+L5cQss+oOg4Ud/8l2NrgEte/KEAmMf4wf2xS0+o/A2jG1cs3x3IYZRR1UaluTBRbrz/Mjg+1KsezuZNJELL2KxbcHUd1xbHRFibzIb1/+gTKddwi7fZwVoORY+Z2tx+25R+vKUF5f74nLyqAlJh45 akpanpromise@hotmail.com
+ - ssh-rsa <your key>
 EOT
 
     liveness_probe {
